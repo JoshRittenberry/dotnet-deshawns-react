@@ -135,4 +135,21 @@ app.MapGet("/api/dogs", () =>
     });
 });
 
+app.MapGet("/api/walkers", () => 
+{
+    return walkers.Select(w =>
+    {
+        var walkerCityObjs = walkerCities.Where(wc => wc.WalkerId == w.Id).ToList();
+        var citiesObjs = cities.Where(c => walkerCityObjs.Any(wc => wc.CityId == c.Id)).ToList();
+
+        return new WalkerDTO
+        {
+            Id = w.Id,
+            FirstName = w.FirstName,
+            LastName = w.LastName,
+            Cities = citiesObjs
+        };
+    });
+});
+
 app.Run();

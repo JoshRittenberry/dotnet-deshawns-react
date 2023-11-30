@@ -15,4 +15,5 @@ public class Walker
             return name;
         }
     }
+    public List<City> Cities { get; set; }
 }
