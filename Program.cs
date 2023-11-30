@@ -135,7 +135,7 @@ app.MapGet("/api/dogs", () =>
     });
 });
 
-app.MapGet("/api/walkers", () => 
+app.MapGet("/api/walkers", () =>
 {
     return walkers.Select(w =>
     {
@@ -148,6 +148,18 @@ app.MapGet("/api/walkers", () =>
             FirstName = w.FirstName,
             LastName = w.LastName,
             Cities = citiesObjs
+        };
+    });
+});
+
+app.MapGet("/api/cities", () => 
+{
+    return cities.Select(c =>
+    {
+        return new CityDTO
+        {
+            Id = c.Id,
+            Name = c.Name
         };
     });
 });
