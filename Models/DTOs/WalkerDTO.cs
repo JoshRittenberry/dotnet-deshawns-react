@@ -15,4 +15,5 @@ public class WalkerDTO
             return name;
         }
     }
+    public List<City> Cities { get; set; }
 }

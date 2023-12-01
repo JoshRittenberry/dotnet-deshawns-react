@@ -5,14 +5,14 @@ export const DogsList = () => {
     const [dogs, setDogs] = useState([])
 
     const getAndSetDogs = () => {
-        let dogsArray = getAllDogs().then(res => {
+        getAllDogs().then(res => {
             setDogs(res)
         })
     }
 
     const getDogImage = () => {
         let image = null
-        
+
         randomDogImage().then(res => {
             image = res.message
         })
