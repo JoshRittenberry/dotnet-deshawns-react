@@ -1,21 +1,53 @@
-export const AddCityPopUp = () => {
+import React, { useEffect, useState } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
+import { postNewCity } from '../../services/cityService';
+
+export const AddCityPopUp = ({getAndSetCities, args}) => {
+    const [modal, setModal] = useState(false);
+    const [text, setText] = useState("")
+    const [newCity, setNewCity] = useState({})
+
+    const toggle = () => setModal(!modal);
+
+    useEffect(() => {
+        let cityObj = { name: text }
+        setNewCity(cityObj)
+    }, [text])
+
     return (
-        <div class="modal fade" id="addCity" tabindex="-1" aria-labelledby="addCity" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
+        <div>
+            <Button color="primary" onClick={toggle}>
+                New City
+            </Button>
+            <Modal isOpen={modal} toggle={toggle} {...args}>
+                <ModalHeader toggle={toggle}>New City Form</ModalHeader>
+                <ModalBody>
+                    <Input placeholder="City Name" value={text} onChange={event => {
+                        setText(event.target.value)
+                    }} />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={() => {
+                        if (text != "") {
+                            postNewCity(newCity).then(() => {
+                                getAndSetCities()
+                            })
+                        }
+                        toggle()
+                        setText("")
+                    }}>
+                        Submit
+                    </Button>{' '}
+                    <Button color="secondary" onClick={() => {
+                        toggle()
+                        setText("")
+                    }}>
+                        Cancel
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
-    )
+    );
 }
+
+export default AddCityPopUp;
