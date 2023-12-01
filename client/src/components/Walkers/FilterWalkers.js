@@ -30,7 +30,7 @@ export const FilterWalkers = ({ filteredWalkers, setFilteredWalkers, direction, 
             })
         } else {
             getAllWalkers().then(walkers => {
-                let filtered = walkers.filter(walker => walker.cities.some(city => city.id == cityID))
+                let filtered = walkers.filter(walker => walker.walkerCities.some(wc => wc.cityId == cityID))
                 setFilteredWalkers(filtered)
             })
         }

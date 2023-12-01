@@ -139,15 +139,22 @@ app.MapGet("/api/walkers", () =>
 {
     return walkers.Select(w =>
     {
-        var walkerCityObjs = walkerCities.Where(wc => wc.WalkerId == w.Id).ToList();
-        var citiesObjs = cities.Where(c => walkerCityObjs.Any(wc => wc.CityId == c.Id)).ToList();
+        var walkerCityObjs = walkerCities
+            .Where(wc => wc.WalkerId == w.Id)
+            .Select(wc => new WalkerCityDTO
+            {
+                Id = wc.Id,
+                CityId = wc.CityId,
+                WalkerId = wc.WalkerId
+            })
+            .ToList();
 
         return new WalkerDTO
         {
             Id = w.Id,
             FirstName = w.FirstName,
             LastName = w.LastName,
-            Cities = citiesObjs
+            WalkerCities = walkerCityObjs
         };
     });
 });
@@ -156,14 +163,21 @@ app.MapGet("/api/cities", () =>
 {
     return cities.Select(c =>
     {
-        var walkerCityObjs = walkerCities.Where(wc => wc.CityId == c.Id).ToList();
-        var walkerObjs = walkers.Where(w => walkerCityObjs.Any(wc => wc.WalkerId == w.Id)).ToList();
+        var walkerCityObjs = walkerCities
+            .Where(wc => wc.CityId == c.Id)
+            .Select(wc => new WalkerCityDTO
+            {
+                Id = wc.Id,
+                CityId = wc.CityId,
+                WalkerId = wc.WalkerId
+            })
+            .ToList();
 
         return new CityDTO
         {
             Id = c.Id,
             Name = c.Name,
-            Walkers = walkerObjs
+            WalkerCities = walkerCityObjs
         };
     });
 });
