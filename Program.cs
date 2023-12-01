@@ -152,14 +152,18 @@ app.MapGet("/api/walkers", () =>
     });
 });
 
-app.MapGet("/api/cities", () => 
+app.MapGet("/api/cities", () =>
 {
     return cities.Select(c =>
     {
+        var walkerCityObjs = walkerCities.Where(wc => wc.CityId == c.Id).ToList();
+        var walkerObjs = walkers.Where(w => walkerCityObjs.Any(wc => wc.WalkerId == w.Id)).ToList();
+
         return new CityDTO
         {
             Id = c.Id,
-            Name = c.Name
+            Name = c.Name,
+            Walkers = walkerObjs
         };
     });
 });
