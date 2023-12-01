@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { getAllCities } from "../../services/cityService"
-import { AddCityButton } from "./AddCityButton"
 import { AddCityPopUp } from "./AddCityPopUp"
 
 export const Cities = () => {
@@ -20,7 +19,7 @@ export const Cities = () => {
         <>
             <header>
                 <h3>Serviced Cities</h3>
-                <AddCityButton />
+                <AddCityPopUp getAndSetCities={getAndSetCities} />
             </header>
             <div className="cities-list">
                 {cities.map(c => {
@@ -31,7 +30,6 @@ export const Cities = () => {
                     )
                 })}
             </div>
-            <AddCityPopUp />
         </>
     )
 }

@@ -168,4 +168,18 @@ app.MapGet("/api/cities", () =>
     });
 });
 
+// Post Methods
+app.MapPost("/api/cities", (City city) =>
+{
+    city.Id = cities.Max(c => c.Id) + 1;
+    cities.Add(city);
+
+    return Results.Created($"/cities/{city.Id}", new CityDTO
+    {
+        Id = city.Id,
+        Name = city.Name
+    });
+
+});
+
 app.Run();
