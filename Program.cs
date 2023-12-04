@@ -238,4 +238,36 @@ app.MapPost("/api/cities", (City city) =>
 
 });
 
+app.MapPost("/api/dogs", (Dog dog) =>
+{
+    dog.Id = dogs.Max(d => d.Id) + 1;
+    dogs.Add(dog);
+
+    Walker WalkerObj = walkers.FirstOrDefault(w => w.Id == dog.WalkerId);
+
+    City CityObj = cities.FirstOrDefault(c => c.Id == dog.CityId);
+
+    return Results.Created($"/dogs/{dog.Id}", new DogDTO
+    {
+        Id = dog.Id,
+        Name = dog.Name,
+        WalkerId = dog.WalkerId,
+        Walker = WalkerObj != null ? new WalkerDTO
+        {
+            Id = WalkerObj.Id,
+            FirstName = WalkerObj.FirstName,
+            LastName = WalkerObj.LastName,
+            // WalkerCities = walkerCityObjsWALKER
+        } : null,
+        CityId = dog.CityId,
+        City = CityObj != null ? new CityDTO
+        {
+            Id = CityObj.Id,
+            Name = CityObj.Name,
+            // WalkerCities = walkerCityObjsCITY
+        } : null,
+        PictureURL = dog.PictureURL
+    });
+});
+
 app.Run();

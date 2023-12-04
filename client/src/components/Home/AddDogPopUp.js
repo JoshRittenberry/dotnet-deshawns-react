@@ -1,48 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Form, FormGroup, Label, Col } from 'reactstrap';
-import { getAllCities, getCityById } from '../../services/cityService';
+import { getAllCities } from '../../services/cityService';
 import { getAllWalkers } from '../../services/walkerService';
+import { postNewDog } from '../../services/dogService';
 
-export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) => {
-    const [edit, setEdit] = useState(false)
+export const AddDogPopUp = ({ getAndSetDogs, args }) => {
+    const [modal, setModal] = useState(false);
+    const [newDog, setNewDog] = useState({})
     const [cities, setCities] = useState([])
     const [city, setCity] = useState({})
     const [walkers, setWalkers] = useState([])
     const [availableWalkers, setAvailableWalkers] = useState([])
-    const [editedDog, setEditedDog] = useState({})
+    const [walker, setWalker] = useState({})
+
+    const toggle = () => setModal(!modal);
 
     const getAndSetCities = () => {
         getAllCities().then(res => {
             setCities(res)
+            setCity(res[1])
         })
     }
 
     const getAndSetWalkers = () => {
         getAllWalkers().then(res => {
             setWalkers(res)
+            setWalker(res[1])
         })
     }
 
     useEffect(() => {
+        let placeholder = {
+            name: "",
+            cityId: 0,
+            walkerId: 0
+        }
         getAndSetCities()
         getAndSetWalkers()
-        getCityById(selectedDog?.cityId).then(res => {
-            setCity(res)
-            setAvailableWalkers(walkers?.filter(walker => res.walkerCities?.some(walkerCity => walkerCity.walkerId === walker.id)))
-        })
-        setEdit(false)
-        let placeholder = {
-            name: selectedDog?.name,
-            cityId: selectedDog?.cityId,
-            walkerId: selectedDog?.walkerId
-        }
-        setEditedDog(placeholder)
-    }, [selectedDog])
+        setNewDog(placeholder)
+    }, [])
 
     return (
         <div>
+            <Button color="primary" onClick={toggle}>
+                New Dog
+            </Button>
             <Modal isOpen={modal} toggle={toggle} {...args}>
-                <ModalHeader toggle={toggle}>Dog Info</ModalHeader>
+                <ModalHeader toggle={toggle}>New Dog Form</ModalHeader>
                 <ModalBody>
                     <Form>
                         {/* Dog Name */}
@@ -56,13 +60,13 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
                             <Col sm={10}>
                                 <Input
                                     id="dogName"
-                                    value={editedDog.name}
-                                    placeholder="Dog Name"
-                                    type={edit ? "input" : "text"}
+                                    value={newDog.name}
+                                    placeholder="Dog's Name"
+                                    type="input"
                                     onChange={event => {
-                                        let placeholder = { ...editedDog }
+                                        let placeholder = { ...newDog }
                                         placeholder.name = event.target.value
-                                        setEditedDog(placeholder)
+                                        setNewDog(placeholder)
                                     }}
                                 />
                             </Col>
@@ -78,11 +82,11 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
                             <Col sm={10}>
                                 <Input
                                     id="dogCity"
-                                    value={edit ? editedDog.cityId : cities.find(c => c.id == editedDog.cityId)?.name}
-                                    type={edit ? "select" : "text"}
+                                    value={newDog?.cityId}
+                                    type="select"
                                     onChange={event => {
-                                        let placeholder = { ...editedDog, cityId: parseInt(event.target.value) }
-                                        setEditedDog(placeholder)
+                                        let placeholder = { ...newDog, cityId: parseInt(event.target.value) }
+                                        setNewDog(placeholder)
                                         cities.map(c => {
                                             if (c.id == parseInt(event.target.value)) {
                                                 setCity(c)
@@ -91,6 +95,9 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
                                         })
                                     }}
                                 >
+                                    <option value="0">
+                                        Please Select a City
+                                    </option>
                                     {cities.map(c => {
                                         return (
                                             <option value={c.id} key={c.id}>
@@ -112,48 +119,50 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
                             <Col sm={10}>
                                 <Input
                                     id="dogWalker"
-                                    value={edit ? editedDog.walkerId : selectedDog.walker?.name ? `${selectedDog.walker?.name}` : "No Walker Assigned"}
-                                    type={edit ? "select" : "text"}
+                                    value={newDog?.walkerId}
+                                    type="select"
                                     onChange={event => {
-                                        let placeholder = { ...editedDog, walkerId: parseInt(event.target.value) }
-                                        setEditedDog(placeholder)
+                                        let placeholder = { ...newDog, walkerId: parseInt(event.target.value) }
+                                        setNewDog(placeholder)
                                     }}
                                 >
-                                    {availableWalkers.map(w => {
-                                        return (
-                                            <option value={w.id} key={w.id}>
-                                                {w.name}
+                                    {newDog.cityId == 0 && (
+                                        <option value="0">
+                                            Please Select a City First
+                                        </option>
+                                    )}
+                                    {newDog.cityId > 0 && (
+                                        <>
+                                            <option value="0">
+                                                Please Select a Walker
                                             </option>
-                                        )
-                                    })}
+                                            {availableWalkers.map(w => {
+                                                return (
+                                                    <option value={w.id} key={w.id}>
+                                                        {w.name}
+                                                    </option>
+                                                )
+                                            })}
+                                        </>
+                                    )}
                                 </Input>
                             </Col>
                         </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    {edit && (
-                        <>
-                            <Button color="primary" onClick={() => {
-                                toggle()
-                                setEdit(false)
-                            }}>
-                                Submit
-                            </Button>{' '}
-                        </>
-                    )}
-                    {!edit && (
-                        <>
-                            <Button color="primary" onClick={() => {
-                                setEdit(true)
-                            }}>
-                                Edit
-                            </Button>{' '}
-                        </>
-                    )}
+                    <Button color="primary" onClick={() => {
+                        if (newDog.name != "" && newDog.cityId != 0 && newDog.walkerId != 0) {
+                            postNewDog(newDog).then(() => {
+                                getAndSetDogs()
+                            })
+                        }
+                        toggle()
+                    }}>
+                        Submit
+                    </Button>{' '}
                     <Button color="secondary" onClick={() => {
                         toggle()
-                        setEdit(false)
                     }}>
                         Cancel
                     </Button>
@@ -163,4 +172,4 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
     );
 }
 
-export default DogDetailsPopUp;
+export default AddDogPopUp;
