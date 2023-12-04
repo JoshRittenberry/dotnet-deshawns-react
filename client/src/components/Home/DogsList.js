@@ -2,22 +2,11 @@ import { useEffect, useState } from "react"
 import { getAllDogs } from "../../services/dogService"
 import DogDetailsPopUp from "./DogDetailsPopUp"
 
-export const DogsList = () => {
+export const DogsList = ({ dogs, setDogs, getAndSetDogs }) => {
     const [modal, setModal] = useState(false);
-    const [dogs, setDogs] = useState([])
     const [selectedDog, setSelectedDog] = useState({})
 
     const toggle = () => setModal(!modal);
-
-    const getAndSetDogs = () => {
-        getAllDogs().then(res => {
-            setDogs(res)
-        })
-    }
-
-    useEffect(() => {
-        getAndSetDogs()
-    }, [])
 
     return (
         <>
