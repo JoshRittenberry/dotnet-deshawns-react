@@ -111,7 +111,25 @@ app.MapGet("/api/dogs", () =>
     return dogs.Select(d =>
     {
         var walker = walkers.FirstOrDefault(w => w.Id == d.WalkerId);
-        var city = cities.FirstOrDefault(c => c.Id == d.Id);
+        var walkerCityObjsWALKER = walker != null ? walkerCities
+            .Where(wc => wc.WalkerId == walker.Id)
+            .Select(wc => new WalkerCityDTO
+            {
+                Id = wc.Id,
+                CityId = wc.CityId,
+                WalkerId = wc.WalkerId
+            })
+            .ToList() : null;
+        var city = cities.FirstOrDefault(c => c.Id == d.CityId);
+        var walkerCityObjsCITY = city != null ? walkerCities
+            .Where(wc => wc.CityId == city.Id)
+            .Select(wc => new WalkerCityDTO
+            {
+                Id = wc.Id,
+                CityId = wc.CityId,
+                WalkerId = wc.WalkerId
+            })
+            .ToList() : null;
 
         return new DogDTO
         {
@@ -123,12 +141,14 @@ app.MapGet("/api/dogs", () =>
                 Id = walker.Id,
                 FirstName = walker.FirstName,
                 LastName = walker.LastName,
+                WalkerCities = walkerCityObjsWALKER
             } : null,
             CityId = d.CityId,
             City = city != null ? new CityDTO
             {
                 Id = city.Id,
-                Name = city.Name
+                Name = city.Name,
+                WalkerCities = walkerCityObjsCITY
             } : null,
             PictureURL = d.PictureURL
         };
@@ -179,6 +199,28 @@ app.MapGet("/api/cities", () =>
             Name = c.Name,
             WalkerCities = walkerCityObjs
         };
+    });
+});
+
+app.MapGet("/api/cities/{id}", (int id) =>
+{
+    City city = cities.FirstOrDefault(c => c.Id == id);
+    var walkerCityObjs = walkerCities
+        .Where(wc => wc.CityId == id)
+        .Select(wc => new WalkerCityDTO
+        {
+            Id = wc.Id,
+            CityId = wc.CityId,
+            WalkerId = wc.WalkerId
+        })
+        .ToList()
+        ;
+
+    return Results.Ok(new CityDTO
+    {
+        Id = city.Id,
+        Name = city.Name,
+        WalkerCities = walkerCityObjs
     });
 });
 
