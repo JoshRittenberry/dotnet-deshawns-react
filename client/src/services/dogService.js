@@ -12,6 +12,12 @@ export const postNewDog = (newDog) => {
     })
 }
 
+export const deleteDog = (id) => {
+    return fetch(`/api/dogs/${id}`, {
+        method: "DELETE",
+    })
+}
+
 export const randomDogImage = () => {
     return fetch(`https://dog.ceo/api/breeds/image/random`).then(res => res.json())
 }
