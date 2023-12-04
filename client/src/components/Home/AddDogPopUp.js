@@ -4,7 +4,7 @@ import { getAllCities } from '../../services/cityService';
 import { getAllWalkers } from '../../services/walkerService';
 import { postNewDog } from '../../services/dogService';
 
-export const AddDogPopUp = ({ getAndSetDogs, args, setSelectedDog, addDogModal, setAddDogModal, toggleDogDetails }) => {
+export const AddDogPopUp = ({ getAndSetDogs, args, setSelectedDog, addDogModal, setAddDogModal, toggleDogDetails, dogs }) => {
     const [newDog, setNewDog] = useState({})
     const [cities, setCities] = useState([])
     const [city, setCity] = useState({})
@@ -26,6 +26,29 @@ export const AddDogPopUp = ({ getAndSetDogs, args, setSelectedDog, addDogModal, 
             setWalkers(res)
             setWalker(res[1])
         })
+    }
+
+    const handleSubmit = () => {
+        if (newDog.name != "" && newDog.cityId != 0 && newDog.walkerId != 0) {
+            let newDogObj = null
+            postNewDog(newDog)
+                .then(res => {
+                    let placeholder = {
+                        name: "",
+                        cityId: 0,
+                        walkerId: 0,
+                        pictureURL: ""
+                    }
+                    setNewDog(placeholder)
+                    newDogObj = res
+                    toggleAddDog()
+                    getAndSetDogs()
+                    console.log(dogs)
+                    console.log(dogs)
+                    setSelectedDog(res)
+                    toggleDogDetails()
+                })
+        }
     }
 
     useEffect(() => {
@@ -173,21 +196,7 @@ export const AddDogPopUp = ({ getAndSetDogs, args, setSelectedDog, addDogModal, 
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => {
-                        if (newDog.name != "" && newDog.cityId != 0 && newDog.walkerId != 0) {
-                            postNewDog(newDog).then(() => {
-                                getAndSetDogs()
-                                let placeholder = {
-                                    name: "",
-                                    cityId: 0,
-                                    walkerId: 0,
-                                    pictureURL: ""
-                                }
-                                setNewDog(placeholder)
-                            })
-                        }
-                        toggleAddDog()
-                    }}>
+                    <Button color="primary" onClick={() => { handleSubmit() }}>
                         Submit
                     </Button>{' '}
                     <Button color="secondary" onClick={() => {

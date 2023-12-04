@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <>
       <p>{greeting.message}</p>
-      <AddDogPopUp getAndSetDogs={getAndSetDogs} setSelectedDog={setSelectedDog} addDogModal={addDogModal} setAddDogModal={setAddDogModal} toggleDogDetails={toggleDogDetails} />
+      <AddDogPopUp getAndSetDogs={getAndSetDogs} setSelectedDog={setSelectedDog} addDogModal={addDogModal} setAddDogModal={setAddDogModal} toggleDogDetails={toggleDogDetails} dogs={dogs} />
       <DogsList dogs={dogs} setDogs={setDogs} getAndSetDogs={getAndSetDogs} selectedDog={selectedDog} setSelectedDog={setSelectedDog} dogDetailsModal={dogDetailsModal} setDogDetailsModal={setDogDetailsModal} toggleDogDetails={toggleDogDetails} />
     </>
   );
