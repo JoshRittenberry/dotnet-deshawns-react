@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react"
-import { getAllDogs, randomDogImage } from "../../services/dogService"
+import { getAllDogs } from "../../services/dogService"
+import DogDetailsPopUp from "./DogDetailsPopUp"
 
 export const DogsList = () => {
+    const [modal, setModal] = useState(false);
     const [dogs, setDogs] = useState([])
+    const [selectedDog, setSelectedDog] = useState({})
+
+    const toggle = () => setModal(!modal);
 
     const getAndSetDogs = () => {
         getAllDogs().then(res => {
             setDogs(res)
         })
-    }
-
-    const getDogImage = () => {
-        let image = null
-
-        randomDogImage().then(res => {
-            image = res.message
-        })
-        return image
     }
 
     useEffect(() => {
@@ -25,13 +21,17 @@ export const DogsList = () => {
 
     return (
         <>
-            {dogs.map(d => {
+            {dogs.map(dog => {
                 return (
-                    <div className="dog-container" id={d.id} key={d.Id}>
-                        {d.name}
+                    <div className="dog-container" id={dog.id} key={dog.Id} value={dog.id} onClick={() => {
+                        setSelectedDog(dog)
+                        toggle()
+                    }}>
+                        {dog.name}
                     </div>
                 )
             })}
+            <DogDetailsPopUp selectedDog={selectedDog} toggle={toggle} modal={modal} setModal={setModal} />
         </>
     )
 }
