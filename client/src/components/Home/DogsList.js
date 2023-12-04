@@ -1,7 +1,7 @@
+import "./DogsList.css"
 import { useEffect, useState } from "react"
 import { deleteDog, getAllDogs } from "../../services/dogService"
 import DogDetailsPopUp from "./DogDetailsPopUp"
-import "./DogsList.css"
 
 export const DogsList = ({ dogs, setDogs, getAndSetDogs, selectedDog, setSelectedDog, dogDetailsModal, setDogDetailsModal }) => {
     const toggleDogDetails = () => setDogDetailsModal(!dogDetailsModal);
@@ -14,7 +14,7 @@ export const DogsList = ({ dogs, setDogs, getAndSetDogs, selectedDog, setSelecte
                         <header className="dog-container-header">
                             <i className="fa-solid fa-trash-can dog-delete" id={dog.id} onClick={event => {
                                 deleteDog(parseInt(event.target.id)).then(() => {
-                                    getAndSetDogs()
+                                        getAndSetDogs()
                                 })
                             }}></i>
                             <h6 className="dog-name">{dog.name}</h6>

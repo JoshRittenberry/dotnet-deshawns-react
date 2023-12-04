@@ -15,5 +15,6 @@ public class Walker
             return name;
         }
     }
+    public string PictureURL { get; set; }
     public List<WalkerCity> WalkerCities { get; set; }
 }
