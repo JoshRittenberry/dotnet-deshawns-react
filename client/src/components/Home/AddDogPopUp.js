@@ -33,7 +33,8 @@ export const AddDogPopUp = ({ getAndSetDogs, args }) => {
         let placeholder = {
             name: "",
             cityId: 0,
-            walkerId: 0
+            walkerId: 0,
+            pictureURL: ""
         }
         getAndSetCities()
         getAndSetWalkers()
@@ -146,6 +147,28 @@ export const AddDogPopUp = ({ getAndSetDogs, args }) => {
                                         </>
                                     )}
                                 </Input>
+                            </Col>
+                        </FormGroup>
+                        {/* Dog Picture */}
+                        <FormGroup row>
+                            <Label
+                                for="dogPicture"
+                                sm={2}
+                            >
+                                Picture
+                            </Label>
+                            <Col sm={10}>
+                                <Input
+                                    id="dogPicture"
+                                    value={newDog.pictureURL}
+                                    placeholder="Picture URL"
+                                    type="input"
+                                    onChange={event => {
+                                        let placeholder = { ...newDog }
+                                        placeholder.pictureURL = event.target.value
+                                        setNewDog(placeholder)
+                                    }}
+                                />
                             </Col>
                         </FormGroup>
                     </Form>
