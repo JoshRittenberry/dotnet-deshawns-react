@@ -17,8 +17,11 @@ export const DogsList = ({ dogs, setDogs, getAndSetDogs }) => {
                         setSelectedDog(dog)
                         toggle()
                     }}>
-                        {dog.name}
-                        <img src={dog.pictureURL} alt="Dog Image" className="dog-image"/>
+                        <header className="dog-container-header">
+                            <i className="fa-solid fa-trash-can dog-delete"></i>
+                            <h6 className="dog-name">{dog.name}</h6>
+                        </header>
+                        <img src={dog.pictureURL} alt="Dog Image" className="dog-image" />
                     </div>
                 )
             })}

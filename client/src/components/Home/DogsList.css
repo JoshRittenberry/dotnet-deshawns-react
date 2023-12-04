@@ -28,6 +28,24 @@
     cursor: pointer;
 }
 
+.dog-container-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.dog-delete {
+    float: left;
+}
+
+.dog-delete:hover {
+    color: red;
+}
+
+.dog-name {
+    width: 100%;
+}
+
 .dog-image {
     width: 100%;
     height: 100%;
