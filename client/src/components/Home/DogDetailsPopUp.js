@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Form, FormGr
 import { getAllCities, getCityById } from '../../services/cityService';
 import { getAllWalkers } from '../../services/walkerService';
 
-export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) => {
+export const DogDetailsPopUp = ({ selectedDog, toggleDogDetails, dogDetailsModal, setDogDetailsModal, args }) => {
     const [edit, setEdit] = useState(false)
     const [cities, setCities] = useState([])
     const [city, setCity] = useState({})
@@ -41,8 +41,8 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
 
     return (
         <div>
-            <Modal isOpen={modal} toggle={toggle} {...args}>
-                <ModalHeader toggle={toggle}>Dog Info</ModalHeader>
+            <Modal isOpen={dogDetailsModal} toggleDogDetails={toggleDogDetails} {...args}>
+                <ModalHeader toggleDogDetails={toggleDogDetails}>Dog Info</ModalHeader>
                 <ModalBody>
                     <Form>
                         {/* Dog Name */}
@@ -135,7 +135,7 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
                     {edit && (
                         <>
                             <Button color="primary" onClick={() => {
-                                toggle()
+                                toggleDogDetails()
                                 setEdit(false)
                             }}>
                                 Submit
@@ -152,7 +152,7 @@ export const DogDetailsPopUp = ({ selectedDog, toggle, modal, setModal, args }) 
                         </>
                     )}
                     <Button color="secondary" onClick={() => {
-                        toggle()
+                        toggleDogDetails()
                         setEdit(false)
                     }}>
                         Cancel

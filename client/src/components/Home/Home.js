@@ -6,6 +6,11 @@ import { getAllDogs } from "../../services/dogService.js";
 
 export default function Home() {
   const [dogs, setDogs] = useState([])
+  const [selectedDog, setSelectedDog] = useState({})
+  const [addDogModal, setAddDogModal] = useState(false);
+  const [dogDetailsModal, setDogDetailsModal] = useState(false);
+
+  const toggleDogDetails = () => setDogDetailsModal(!dogDetailsModal);
 
   const [greeting, setGreeting] = useState({
     message: "Not Connected to the API",
@@ -29,8 +34,8 @@ export default function Home() {
   return (
     <>
       <p>{greeting.message}</p>
-      <AddDogPopUp getAndSetDogs={getAndSetDogs}/>
-      <DogsList dogs={dogs} setDogs={setDogs} getAndSetDogs={getAndSetDogs} />
+      <AddDogPopUp getAndSetDogs={getAndSetDogs} setSelectedDog={setSelectedDog} addDogModal={addDogModal} setAddDogModal={setAddDogModal} toggleDogDetails={toggleDogDetails} />
+      <DogsList dogs={dogs} setDogs={setDogs} getAndSetDogs={getAndSetDogs} selectedDog={selectedDog} setSelectedDog={setSelectedDog} dogDetailsModal={dogDetailsModal} setDogDetailsModal={setDogDetailsModal} toggleDogDetails={toggleDogDetails} />
     </>
   );
 }

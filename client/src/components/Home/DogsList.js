@@ -3,11 +3,8 @@ import { deleteDog, getAllDogs } from "../../services/dogService"
 import DogDetailsPopUp from "./DogDetailsPopUp"
 import "./DogsList.css"
 
-export const DogsList = ({ dogs, setDogs, getAndSetDogs }) => {
-    const [modal, setModal] = useState(false);
-    const [selectedDog, setSelectedDog] = useState({})
-
-    const toggle = () => setModal(!modal);
+export const DogsList = ({ dogs, setDogs, getAndSetDogs, selectedDog, setSelectedDog, dogDetailsModal, setDogDetailsModal }) => {
+    const toggleDogDetails = () => setDogDetailsModal(!dogDetailsModal);
 
     return (
         <div className="dogs-list">
@@ -24,12 +21,12 @@ export const DogsList = ({ dogs, setDogs, getAndSetDogs }) => {
                         </header>
                         <img src={dog.pictureURL} alt="Dog Image" className="dog-image" onClick={() => {
                             setSelectedDog(dog)
-                            toggle()
-                        }}/>
+                            toggleDogDetails()
+                        }} />
                     </div>
                 )
             })}
-            <DogDetailsPopUp selectedDog={selectedDog} toggle={toggle} modal={modal} setModal={setModal} />
+            <DogDetailsPopUp selectedDog={selectedDog} toggleDogDetails={toggleDogDetails} dogDetailsModal={dogDetailsModal} setDogDetailsModal={setDogDetailsModal} />
         </div>
     )
 }
