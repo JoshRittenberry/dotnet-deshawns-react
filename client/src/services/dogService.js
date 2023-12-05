@@ -9,13 +9,11 @@ export const postNewDog = (newDog) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(newDog)
-    })
+    }).then(res => res.json())
 }
 
 export const deleteDog = (id) => {
-    return fetch(`/api/dogs/${id}`, {
-        method: "DELETE",
-    })
+    return fetch(`/api/dogs/${id}`, { method: "DELETE" })
 }
 
 export const randomDogImage = () => {

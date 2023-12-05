@@ -45,15 +45,15 @@ List<Dog> dogs = new List<Dog>
 };
 List<Walker> walkers = new List<Walker>
 {
-    new Walker { Id = 1, FirstName = "John", LastName = "Doe" },
-    new Walker { Id = 2, FirstName = "Jane", LastName = "Doe" },
-    new Walker { Id = 3, FirstName = "Alice", LastName = "Smith" },
-    new Walker { Id = 4, FirstName = "Bob", LastName = "Johnson" },
-    new Walker { Id = 5, FirstName = "Carol", LastName = "Williams" },
-    new Walker { Id = 6, FirstName = "David", LastName = "Brown" },
-    new Walker { Id = 7, FirstName = "Eva", LastName = "Davis" },
-    new Walker { Id = 8, FirstName = "Frank", LastName = "Miller" },
-    new Walker { Id = 9, FirstName = "Grace", LastName = "Wilson" }
+    new Walker { Id = 1, FirstName = "John", LastName = "Doe", PictureURL = "https://www.betterteam.com/images/dog-walker-job-description-4088x2725-20201130.jpeg?crop=1:1,smart&width=1200&dpr=2" },
+    new Walker { Id = 2, FirstName = "Jane", LastName = "Doe", PictureURL = "https://a.storyblok.com/f/152976/1254x836/ee122f35bd/istock-1309817520.jpg" },
+    new Walker { Id = 3, FirstName = "Alice", LastName = "Smith", PictureURL = "https://nationaltoday.com/wp-content/uploads/2022/01/National-Dog-Walker-Appreciation-Day-1200x834.jpg" },
+    new Walker { Id = 4, FirstName = "Bob", LastName = "Johnson", PictureURL = "https://images.wagwalkingweb.com/media/daily_wag/blog_articles/hero/1661975854.877821/7-ways-to-show-appreciation-for-your-dog-walker.png" },
+    new Walker { Id = 5, FirstName = "Carol", LastName = "Williams", PictureURL = "https://vamospanish.com/wp-content/uploads/Buenos-Aires-Dog-Walkers.jpg" },
+    new Walker { Id = 6, FirstName = "David", LastName = "Brown", PictureURL = "https://frontporchne.com/wp-content/uploads/2022/01/babywalking1.jpg" },
+    new Walker { Id = 7, FirstName = "Eva", LastName = "Davis", PictureURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfGbr7VKpWujyHRnWrUUSxXGaemTOoM6uw6PPS7COuCsZmmqga8uRJX41flW64BP-ihec&usqp=CAU" },
+    new Walker { Id = 8, FirstName = "Frank", LastName = "Miller", PictureURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThhf_5EyqGiSrvNXtlmgxV6ebMuE_93zcHyA&usqp=CAU" },
+    new Walker { Id = 9, FirstName = "Grace", LastName = "Wilson", PictureURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8VbOcud7lAup8XMbeXzgwe3b0jg593C84-A&usqp=CAU" }
 };
 List<WalkerCity> walkerCities = new List<WalkerCity>
 {
@@ -141,6 +141,7 @@ app.MapGet("/api/dogs", () =>
                 Id = walker.Id,
                 FirstName = walker.FirstName,
                 LastName = walker.LastName,
+                PictureURL = walker.PictureURL,
                 WalkerCities = walkerCityObjsWALKER
             } : null,
             CityId = d.CityId,
@@ -174,6 +175,7 @@ app.MapGet("/api/walkers", () =>
             Id = w.Id,
             FirstName = w.FirstName,
             LastName = w.LastName,
+            PictureURL = w.PictureURL,
             WalkerCities = walkerCityObjs
         };
     });
@@ -257,6 +259,7 @@ app.MapPost("/api/dogs", (Dog dog) =>
             Id = WalkerObj.Id,
             FirstName = WalkerObj.FirstName,
             LastName = WalkerObj.LastName,
+            PictureURL = WalkerObj.PictureURL,
             // WalkerCities = walkerCityObjsWALKER
         } : null,
         CityId = dog.CityId,
@@ -270,7 +273,6 @@ app.MapPost("/api/dogs", (Dog dog) =>
     });
 });
 
-
 // Delete Methods
 app.MapDelete("/api/dogs/{id}", (int id) =>
 {
@@ -280,6 +282,17 @@ app.MapDelete("/api/dogs/{id}", (int id) =>
         return Results.NotFound();
     }
     dogs.Remove(dog);
+    return Results.NoContent();
+});
+
+app.MapDelete("/api/walkers/{id}", (int id) =>
+{
+    Walker walker = walkers.FirstOrDefault(w => w.Id == id);
+    if (walker == null)
+    {
+        return Results.NotFound();
+    }
+    walkers.Remove(walker);
     return Results.NoContent();
 });
 

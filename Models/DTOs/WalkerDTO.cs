@@ -15,5 +15,6 @@ public class WalkerDTO
             return name;
         }
     }
+    public string PictureURL { get; set; }
     public List<WalkerCityDTO> WalkerCities { get; set; }
 }

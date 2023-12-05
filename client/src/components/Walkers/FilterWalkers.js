@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { getAllCities } from '../../services/cityService';
 import { getAllWalkers } from '../../services/walkerService';
 
-export const FilterWalkers = ({ filteredWalkers, setFilteredWalkers, direction, ...args }) => {
+export const FilterWalkers = ({ filteredWalkers, setFilteredWalkers, direction, walkers, ...args }) => {
     const [cities, setCities] = useState([])
     const [text, setText] = useState("")
     const [cityID, setCityID] = useState(0)
@@ -24,7 +24,7 @@ export const FilterWalkers = ({ filteredWalkers, setFilteredWalkers, direction, 
     }
 
     const updateWalkers = () => {
-        if (cityID == 0){
+        if (cityID == 0) {
             getAllWalkers().then(walkers => {
                 setFilteredWalkers(walkers)
             })
@@ -44,7 +44,7 @@ export const FilterWalkers = ({ filteredWalkers, setFilteredWalkers, direction, 
             setText(cities.find(c => c.id == cityID).name)
         }
         updateWalkers()
-    }, [cityID])
+    }, [cityID, walkers])
 
     return (
         <div className="d-flex p-5">
