@@ -273,6 +273,20 @@ app.MapPost("/api/dogs", (Dog dog) =>
     });
 });
 
+app.MapPost("/api/walkerCities", (WalkerCity walkerCity) =>
+{
+    walkerCity.Id = walkerCities.Max(wc => wc.Id) + 1;
+    walkerCities.Add(walkerCity);
+
+    return Results.Created($"/walkerCities/{walkerCity.Id}", new WalkerCityDTO
+    {
+        Id = walkerCity.Id,
+        WalkerId = walkerCity.WalkerId,
+        CityId = walkerCity.CityId
+    });
+
+});
+
 // Delete Methods
 app.MapDelete("/api/dogs/{id}", (int id) =>
 {
@@ -293,6 +307,17 @@ app.MapDelete("/api/walkers/{id}", (int id) =>
         return Results.NotFound();
     }
     walkers.Remove(walker);
+    return Results.NoContent();
+});
+
+app.MapDelete("/api/walkerCities/{id}", (int id) =>
+{
+    WalkerCity walkerCity = walkerCities.FirstOrDefault(wc => wc.Id == id);
+    if (walkerCity == null)
+    {
+        return Results.NotFound();
+    }
+    walkerCities.Remove(walkerCity);
     return Results.NoContent();
 });
 
