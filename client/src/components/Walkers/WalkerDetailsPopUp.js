@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Form, La
 import { getAllCities } from '../../services/cityService';
 import { deleteWalkerCity, postWalkerCity } from '../../services/walkerService';
 
-export const WalkerDetailsPopUp = ({ selectedWalker, toggleWalkerDetails, walkerDetailsModal, setWalkerDetailsModal, getAndSetWalkers, args }) => {
+export const WalkerDetailsPopUp = ({ selectedWalker, toggleWalkerDetails, walkerDetailsModal, getAndSetWalkers, args }) => {
     const [edit, setEdit] = useState(false)
     const [editedWalker, setEditedWalker] = useState({})
     const [cities, setCities] = useState([])
@@ -28,7 +28,7 @@ export const WalkerDetailsPopUp = ({ selectedWalker, toggleWalkerDetails, walker
     return (
         <div>
             <Modal isOpen={walkerDetailsModal} toggleWalkerDetails={toggleWalkerDetails} {...args}>
-                <ModalHeader toggleWalkerDetails={toggleWalkerDetails}>Modal title</ModalHeader>
+                <ModalHeader toggleWalkerDetails={toggleWalkerDetails}>Walker Info</ModalHeader>
                 <ModalBody>
                     <Form>
                         {/* Walker First Name */}
@@ -77,6 +77,7 @@ export const WalkerDetailsPopUp = ({ selectedWalker, toggleWalkerDetails, walker
                                 />
                             </Col>
                         </FormGroup>
+                        {/* Walker Cities */}
                         {cities?.map(city => {
                             let isChecked = selectedWalker.walkerCities?.some(wc => wc.cityId == city.id)
                             return (

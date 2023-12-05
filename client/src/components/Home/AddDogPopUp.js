@@ -45,7 +45,7 @@ export const AddDogPopUp = ({ getAndSetDogs, args, setSelectedDog, addDogModal, 
                     getAndSetDogs()
                     console.log(dogs)
                     // I DON'T WANT IT DONE THIS WAY
-                    setSelectedDog(res)
+                    // setSelectedDog(res)
                     toggleDogDetails()
                 })
         }
