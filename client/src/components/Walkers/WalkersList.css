@@ -7,6 +7,35 @@
     /* background-color: #f7f7f7; */
 }
 
+.walkers-header {
+    position: relative;
+    text-align: center;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: .5%;
+}
+
+.walkers-header>h3 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.walkers-header .d-flex {
+    justify-content: flex-end;
+    padding-top: 20px;
+    /* Adjust this value as needed to align with the title */
+}
+
+.walkers-header .dropdown {
+    position: absolute;
+    right: 15px;
+    /* Adjust the right margin as needed */
+    top: 0;
+}
+
 .walker-container {
     display: flex;
     flex-direction: column;
