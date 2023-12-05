@@ -1,3 +1,5 @@
+using System.Runtime.ExceptionServices;
+
 List<City> cities = new List<City>
 {
     new City { Id = 1, Name = "Nashville" },
@@ -285,6 +287,25 @@ app.MapPost("/api/walkerCities", (WalkerCity walkerCity) =>
         CityId = walkerCity.CityId
     });
 
+});
+
+// Put Methods
+app.MapPut("/api/dogs/{id}", (int id, Dog dog) =>
+{
+    Dog dogToUpdate = dogs.FirstOrDefault(dog => dog.Id == id);
+
+    if (dogToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    if (id != dogToUpdate.Id)
+    {
+        return Results.BadRequest();
+    }
+
+    dogToUpdate.WalkerId = dog.WalkerId;
+
+    return Results.NoContent();
 });
 
 // Delete Methods

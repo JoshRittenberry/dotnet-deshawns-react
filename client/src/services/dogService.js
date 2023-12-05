@@ -16,6 +16,12 @@ export const deleteDog = (id) => {
     return fetch(`/api/dogs/${id}`, { method: "DELETE" })
 }
 
-export const randomDogImage = () => {
-    return fetch(`https://dog.ceo/api/breeds/image/random`).then(res => res.json())
+export const updateDogWalker = (updatedDog) => {
+    return fetch(`/api/dogs/${updatedDog.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedDog)
+    })
 }
