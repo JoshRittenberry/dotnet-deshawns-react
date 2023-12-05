@@ -14,7 +14,7 @@ export const DogsList = ({ dogs, setDogs, getAndSetDogs, selectedDog, setSelecte
                         <header className="dog-container-header">
                             <i className="fa-solid fa-trash-can dog-delete" id={dog.id} onClick={event => {
                                 deleteDog(parseInt(event.target.id)).then(() => {
-                                        getAndSetDogs()
+                                    getAndSetDogs()
                                 })
                             }}></i>
                             <h6 className="dog-name">{dog.name}</h6>

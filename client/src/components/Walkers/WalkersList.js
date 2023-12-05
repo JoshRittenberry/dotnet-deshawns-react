@@ -2,14 +2,22 @@ import "./WalkersList.css"
 import { useEffect, useState } from "react"
 import { deleteWalker, getAllWalkers } from "../../services/walkerService";
 import { FilterWalkers } from "./FilterWalkers";
+import { WalkerDetailsPopUp } from "./WalkerDetailsPopUp"
 
-export const Walkers = () => {
-    const [walkers, setWalkers] = useState([]);
-    const [filteredWalkers, setFilteredWalkers] = useState([]);
+export const WalkersList = () => {
+    const [walkers, setWalkers] = useState([])
+    const [selectedWalker, setSelectedwalker] = useState({})
+    const [filteredWalkers, setFilteredWalkers] = useState([])
+    const [walkerDetailsModal, setWalkerDetailsModal] = useState(false)
+
+    const toggleWalkerDetails = () => setWalkerDetailsModal(!walkerDetailsModal)
 
     const getAndSetWalkers = () => {
         getAllWalkers().then(res => {
             setWalkers(res)
+            if (selectedWalker.id != null) {
+                setSelectedwalker(res.find(res => res.id == selectedWalker.id))
+            }
         })
     }
 
@@ -37,12 +45,13 @@ export const Walkers = () => {
                                 <h6 className="walker-name">{walker.name}</h6>
                             </header>
                             <img src={walker.pictureURL} alt="walker Image" className="walker-image" onClick={() => {
-                                // setSelectedwalker(walker)
-                                // togglewalkerDetails()
+                                setSelectedwalker(walker)
+                                toggleWalkerDetails()
                             }} />
                         </div>
                     )
                 })}
+                <WalkerDetailsPopUp selectedWalker={selectedWalker} toggleWalkerDetails={toggleWalkerDetails} walkerDetailsModal={walkerDetailsModal} setWalkerDetailsModal={setWalkerDetailsModal} getAndSetWalkers={getAndSetWalkers} />
             </div>
         </>
     )

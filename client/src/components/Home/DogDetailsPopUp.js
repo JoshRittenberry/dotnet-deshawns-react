@@ -58,7 +58,8 @@ export const DogDetailsPopUp = ({ selectedDog, toggleDogDetails, dogDetailsModal
                                     id="dogName"
                                     value={editedDog.name}
                                     placeholder="Dog Name"
-                                    type={edit ? "input" : "text"}
+                                    type="text"
+                                    readOnly={!edit}
                                     onChange={event => {
                                         let placeholder = { ...editedDog }
                                         placeholder.name = event.target.value
@@ -80,6 +81,7 @@ export const DogDetailsPopUp = ({ selectedDog, toggleDogDetails, dogDetailsModal
                                     id="dogCity"
                                     value={edit ? editedDog.cityId : cities.find(c => c.id == editedDog.cityId)?.name}
                                     type={edit ? "select" : "text"}
+                                    readOnly={!edit}
                                     onChange={event => {
                                         let placeholder = { ...editedDog, cityId: parseInt(event.target.value) }
                                         setEditedDog(placeholder)
@@ -114,6 +116,7 @@ export const DogDetailsPopUp = ({ selectedDog, toggleDogDetails, dogDetailsModal
                                     id="dogWalker"
                                     value={edit ? editedDog.walkerId : selectedDog.walker?.name ? `${selectedDog.walker?.name}` : "No Walker Assigned"}
                                     type={edit ? "select" : "text"}
+                                    readOnly={!edit}
                                     onChange={event => {
                                         let placeholder = { ...editedDog, walkerId: parseInt(event.target.value) }
                                         setEditedDog(placeholder)
