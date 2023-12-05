@@ -5,6 +5,7 @@ import { FilterWalkers } from "./FilterWalkers";
 import { WalkerDetailsPopUp } from "./WalkerDetailsPopUp"
 import { Button } from "reactstrap";
 import { AddDogToWalkerPopUp } from "./AddDogToWalkerPopUp";
+import { getAllDogs, updateDogWalker } from "../../services/dogService";
 
 export const WalkersList = () => {
     const [walkers, setWalkers] = useState([])
@@ -41,9 +42,16 @@ export const WalkersList = () => {
                         <div className="walker-container" id={walker.id} key={walker.id}>
                             <header>
                                 <i className="fa-solid fa-trash-can walker-delete" id={walker.id} onClick={event => {
-                                    console.log("hello???")
-                                    deleteWalker(parseInt(event.target.id)).then(() => {
-                                        getAndSetWalkers()
+                                    let dogs = []
+                                    getAllDogs().then(res => {
+                                        res.filter(res => res.walkerId == selectedWalker.id)
+                                        dogs?.map(dog => {
+                                            let updatedDog = {...dog, walkerId: 0}
+                                            updateDogWalker(updatedDog)
+                                        })
+                                        deleteWalker(parseInt(event.target.id)).then(() => {
+                                            getAndSetWalkers()
+                                        })
                                     })
                                 }}></i>
                                 <h6 className="walker-name">{walker.name}</h6>
