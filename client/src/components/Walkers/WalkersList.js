@@ -3,14 +3,18 @@ import { useEffect, useState } from "react"
 import { deleteWalker, getAllWalkers } from "../../services/walkerService";
 import { FilterWalkers } from "./FilterWalkers";
 import { WalkerDetailsPopUp } from "./WalkerDetailsPopUp"
+import { Button } from "reactstrap";
+import { AddDogToWalkerPopUp } from "./AddDogToWalkerPopUp";
 
 export const WalkersList = () => {
     const [walkers, setWalkers] = useState([])
     const [selectedWalker, setSelectedwalker] = useState({})
     const [filteredWalkers, setFilteredWalkers] = useState([])
     const [walkerDetailsModal, setWalkerDetailsModal] = useState(false)
+    const [addDogModal, setAddDogModal] = useState(false)
 
     const toggleWalkerDetails = () => setWalkerDetailsModal(!walkerDetailsModal)
+    const toggleAddDog = () => setAddDogModal(!addDogModal)
 
     const getAndSetWalkers = () => {
         getAllWalkers().then(res => {
@@ -48,10 +52,17 @@ export const WalkersList = () => {
                                 setSelectedwalker(walker)
                                 toggleWalkerDetails()
                             }} />
+                            <Button color="primary" onClick={() => {
+                                setSelectedwalker(walker)
+                                toggleAddDog()
+                            }}>
+                                Add Dog
+                            </Button>
                         </div>
                     )
                 })}
-                <WalkerDetailsPopUp selectedWalker={selectedWalker} toggleWalkerDetails={toggleWalkerDetails} walkerDetailsModal={walkerDetailsModal} setWalkerDetailsModal={setWalkerDetailsModal} getAndSetWalkers={getAndSetWalkers} />
+                <WalkerDetailsPopUp selectedWalker={selectedWalker} toggleWalkerDetails={toggleWalkerDetails} walkerDetailsModal={walkerDetailsModal} getAndSetWalkers={getAndSetWalkers} />
+                <AddDogToWalkerPopUp selectedWalker={selectedWalker} toggleAddDog={toggleAddDog} addDogModal={addDogModal} getAndSetWalkers={getAndSetWalkers} />
             </div>
         </>
     )
