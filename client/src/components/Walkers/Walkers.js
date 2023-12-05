@@ -21,7 +21,7 @@ export const Walkers = () => {
         <>
             <header className="walkers-header">
                 <h3>Available Walkers</h3>
-                <FilterWalkers filteredWalkers={filteredWalkers} setFilteredWalkers={setFilteredWalkers}/>
+                <FilterWalkers filteredWalkers={filteredWalkers} setFilteredWalkers={setFilteredWalkers} walkers={walkers} />
             </header>
             <div className="walkers-list">
                 {filteredWalkers.map(walker => {
@@ -29,6 +29,7 @@ export const Walkers = () => {
                         <div className="walker-container" id={walker.id} key={walker.id}>
                             <header>
                                 <i className="fa-solid fa-trash-can walker-delete" id={walker.id} onClick={event => {
+                                    console.log("hello???")
                                     deleteWalker(parseInt(event.target.id)).then(() => {
                                         getAndSetWalkers()
                                     })
